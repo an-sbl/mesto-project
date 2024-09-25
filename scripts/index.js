@@ -35,7 +35,9 @@ initialCards.forEach(function (cardInfo){
     const card = createCard(link, name, alt, removeCard);
     appendCard(card);
 });
-/* Будущие наработки
+
+/*
+ Будущие наработки
 // Вызов popup для добавления карточки и добавление рандомной карточки из массива
 const addCardButton = document.querySelector('.profile__add-button');
 const popUpCard = document.querySelector('.popup_type_new-card');

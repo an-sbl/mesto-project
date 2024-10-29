@@ -1,39 +1,11 @@
 import '../pages/index.css';
-import './cards.js';
+import './cardsDB.js';
+import {createCard, appendCard, removeCard, handleLikeCard} from './cards.js'
+import {openModal, closeModal, listenPopUp} from './modal.js'
 
-import { initialCards } from './cards.js';
-// @todo: Темплейт карточки
-const cardTemplate = document.querySelector('#card-template').content;
+import { initialCards} from './cardsDB.js';
 
-// @todo: DOM узлы
-const placesList = document.querySelector('.places__list');
-
-
-// @todo: Функция создания карточки
-function createCard(link, name, alt, deleteCard, PopUpImage, LikeCard){
-    const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-    const deleteButton = cardElement.querySelector('.card__delete-button');
-    cardElement.querySelector('.card__image').src = link;
-    cardElement.querySelector('.card__image').alt = alt;
-    cardElement.querySelector('.card__title').textContent = name;
-    deleteButton.addEventListener('click', deleteCard);
-    cardElement.querySelector('.card__image').addEventListener('click', PopUpImage);
-    cardElement.querySelector('.card__like-button').addEventListener('click', LikeCard);
-    return cardElement;
-}
-
-function appendCard(card){
-    placesList.append(card);
-}
-
-// @todo: Функция удаления карточки
-function removeCard(evt){
-    const eventTarget = evt.target;
-    const cardItem = eventTarget.closest('.card');
-    cardItem.remove();
- }
-
-// @todo: Вывести карточки на страницу
+// Вывод карточки на страницу
 
 initialCards.forEach(function (cardInfo){
     const link = cardInfo.link;
@@ -42,43 +14,6 @@ initialCards.forEach(function (cardInfo){
     const card = createCard(link, name, alt, removeCard);
     appendCard(card);
 });
-
-
-
-
- 
-// Открытие, закрытие popUp
-const handleEscKeyUp = (e) => {
-    if (e.key === "Escape") {
-        const openedPopup = document.querySelector('.popup_is-opened');
-        closeModal(openedPopup);
-    }
-};
-  
-export const openModal = (modal) => {
-    modal.classList.add('popup_is-opened');
-    document.addEventListener('keydown', handleEscKeyUp);
-  };
-  
-export const closeModal= (modal) => {
-    modal.classList.remove('popup_is-opened');
-    document.removeEventListener('keydown', handleEscKeyUp);
-  };
-  
-  
-export const listenPopUp = (popUp) => {
-    
-    const popupClose = popUp.querySelector('.popup__close');
-    popupClose.addEventListener("click", () => {
-      closeModal(popUp);
-    });
-  
-    popUp.addEventListener("mousedown", (event) => {
-        if (event.target.classList.contains('popup')){
-            closeModal(popUp);
-        }
-    });
-  }
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const popUpEditProfile = document.querySelector('.popup_type_edit');
@@ -151,8 +86,3 @@ function handleFormAddCardSubmit(evt) {
     }
 formCard.addEventListener('submit', handleFormAddCardSubmit);
 
-
-function handleLikeCard(evt) {
-    evt.preventDefault();
-    evt.target.classList.toggle('card__like-button_is-active'); 
-}

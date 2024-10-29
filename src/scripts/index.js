@@ -10,13 +10,15 @@ const placesList = document.querySelector('.places__list');
 
 
 // @todo: Функция создания карточки
-function createCard(link, name, alt, deleteCard, listenPopUpImage){
+function createCard(link, name, alt, deleteCard, PopUpImage, LikeCard){
     const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
     const deleteButton = cardElement.querySelector('.card__delete-button');
     cardElement.querySelector('.card__image').src = link;
     cardElement.querySelector('.card__image').alt = alt;
     cardElement.querySelector('.card__title').textContent = name;
     deleteButton.addEventListener('click', deleteCard);
+    cardElement.querySelector('.card__image').addEventListener('click', PopUpImage);
+    cardElement.querySelector('.card__like-button').addEventListener('click', LikeCard);
     return cardElement;
 }
 
@@ -99,15 +101,14 @@ addCardButton.addEventListener('click', function(){
 }
 );
 
+
 cards.forEach(function(card){
-    const cardImage = card.querySelector('.card__image');
-    card.addEventListener('click', listenPopUpImage);
-    //     popUpImage.querySelector('.popup__image').src = card.querySelector('.card__image').src;
-    //     popUpImage.querySelector('.popup__caption').textContent =card.querySelector('.card__title').textContent;
-    //     openModal(popUpImage);
-    // }
-    // );
+    card.querySelector('.card__image').addEventListener('click', listenPopUpImage);
+    card.querySelector('.card__like-button').addEventListener('click', handleLikeCard);
 });
+
+// Обработка попапа картинки карточки
+
 function listenPopUpImage (e){
     document.querySelector('.popup__image').src = e.link;
     document.querySelector('.popup__caption').textContent =e.name;
@@ -143,7 +144,7 @@ const cardUrlInput =  formCard.querySelector('.popup__input_type_url');
 
 function handleFormAddCardSubmit(evt) {
         evt.preventDefault();
-        const card = createCard(cardUrlInput.value, cardNnameInput.value, "Описание картинки", removeCard);
+        const card = createCard(cardUrlInput.value, cardNnameInput.value, "Описание картинки", removeCard, listenPopUpImage, handleLikeCard);
         appendCard(card);
         formCard.reset();
         closeModal(popUpAddCard);
@@ -151,3 +152,7 @@ function handleFormAddCardSubmit(evt) {
 formCard.addEventListener('submit', handleFormAddCardSubmit);
 
 
+function handleLikeCard(evt) {
+    evt.preventDefault();
+    evt.target.classList.toggle('card__like-button_is-active'); 
+}

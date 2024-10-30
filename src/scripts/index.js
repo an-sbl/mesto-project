@@ -11,7 +11,7 @@ initialCards.forEach(function (cardInfo){
     const link = cardInfo.link;
     const name = cardInfo.name;
     const alt = cardInfo.alt;
-    const card = createCard(link, name, alt, removeCard);
+    const card = createCard(link, name, alt, removeCard, listenPopUpImage, handleLikeCard);
     appendCard(card);
 });
 
@@ -38,17 +38,21 @@ addCardButton.addEventListener('click', function(){
 
 
 cards.forEach(function(card){
-    card.querySelector('.card__image').addEventListener('click', listenPopUpImage);
+    const name = card.querySelector('.card__title').textContent;
+    const link = card.querySelector('.card__image').src;
+    card.querySelector('.card__image').addEventListener('click', () => listenPopUpImage(name, link));
     card.querySelector('.card__like-button').addEventListener('click', handleLikeCard);
 });
 
 // Обработка попапа картинки карточки
 
-function listenPopUpImage (e){
-    document.querySelector('.popup__image').src = e.link;
-    document.querySelector('.popup__caption').textContent =e.name;
+export function listenPopUpImage(name, link){
+    popUpImage.querySelector('.popup__image').src = link;
+    popUpImage.querySelector('.popup__caption').textContent = name;
     openModal(popUpImage);
 }
+
+
 
     
 // Обработка редактирования профиля

@@ -1,3 +1,4 @@
+import {listenPopUpImage} from './index.js'
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector('#card-template').content;
 
@@ -11,7 +12,7 @@ export function createCard(link, name, alt, deleteCard, PopUpImage, LikeCard){
   cardElement.querySelector('.card__image').alt = alt;
   cardElement.querySelector('.card__title').textContent = name;
   deleteButton.addEventListener('click', deleteCard);
-  cardElement.querySelector('.card__image').addEventListener('click', PopUpImage);
+  cardElement.querySelector('.card__image').addEventListener('click', () => listenPopUpImage(name, link));
   cardElement.querySelector('.card__like-button').addEventListener('click', LikeCard);
   return cardElement;
 }

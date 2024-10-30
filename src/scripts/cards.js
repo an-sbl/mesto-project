@@ -17,8 +17,8 @@ export function createCard(link, name, alt, deleteCard, PopUpImage, LikeCard){
   return cardElement;
 }
 
-export function appendCard(card){
-  placesList.append(card);
+export function prependCard(card){
+  placesList.prepend(card);
 }
 
 // @todo: Функция удаления карточки

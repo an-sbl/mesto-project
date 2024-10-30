@@ -1,6 +1,6 @@
 import '../pages/index.css';
 import './cardsDB.js';
-import {createCard, appendCard, removeCard, handleLikeCard} from './cards.js'
+import {createCard, prependCard, removeCard, handleLikeCard} from './cards.js'
 import {openModal, closeModal, listenPopUp} from './modal.js'
 
 import { initialCards} from './cardsDB.js';
@@ -12,7 +12,7 @@ initialCards.forEach(function (cardInfo){
     const name = cardInfo.name;
     const alt = cardInfo.alt;
     const card = createCard(link, name, alt, removeCard, listenPopUpImage, handleLikeCard);
-    appendCard(card);
+    prependCard(card);
 });
 
 const profileEditButton = document.querySelector('.profile__edit-button');
@@ -84,7 +84,7 @@ const cardUrlInput =  formCard.querySelector('.popup__input_type_url');
 function handleFormAddCardSubmit(evt) {
         evt.preventDefault();
         const card = createCard(cardUrlInput.value, cardNnameInput.value, "Описание картинки", removeCard, listenPopUpImage, handleLikeCard);
-        appendCard(card);
+        prependCard(card);
         formCard.reset();
         closeModal(popUpAddCard);
     }

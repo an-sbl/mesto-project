@@ -17,7 +17,7 @@ export const closeModal= (modal) => {
 };
 
 
-export const listenPopUp = (popUp) => {
+export const addPopupListeners = (popUp) => {
   popUp.classList.add('popup_is-animated');
   const popupClose = popUp.querySelector('.popup__close');
   popupClose.addEventListener("click", () => {

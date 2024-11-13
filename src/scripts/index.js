@@ -1,9 +1,10 @@
 import '../pages/index.css';
 import './cardsDB.js';
+import './validation.js';
 import {createCard, removeCard, handleLikeCard} from './cards.js'
 import {openModal, closeModal, addPopupListeners} from './modal.js'
-
-import { initialCards} from './cardsDB.js';
+import {toggleButtonState, setEventListeners, hideInputError} from './validation.js'
+import {initialCards} from './cardsDB.js';
 
 // Вывод карточки на страницу
 
@@ -46,6 +47,7 @@ const profileDescription = document.querySelector('.profile__description');
 
 
 profileEditButton.addEventListener('click', function(){
+    clearValidation(formEdit, validationConfig);
     nameInput.value = profileName.textContent;
     jobInput.value = profileDescription.textContent;
     openModal(popUpEditProfile);
@@ -54,12 +56,12 @@ profileEditButton.addEventListener('click', function(){
 
 function handleEditProfileFormSubmit(evt) {
         evt.preventDefault();
-        //const profileName = document.querySelector('.profile__title');
-        //const profileDescription = document.querySelector('.profile__description');
         profileName.textContent = nameInput.value;
         profileDescription.textContent = jobInput.value;
         closeModal(popUpEditProfile);
     }
+
+
 formEdit.addEventListener('submit', handleEditProfileFormSubmit);
 
 // Обработка добавления карточки
@@ -69,7 +71,10 @@ const cardNnameInput = formCard.querySelector('.popup__input_type_card-name');
 const cardUrlInput =  formCard.querySelector('.popup__input_type_url');
 
 addCardButton.addEventListener('click', function(){
-    openModal(popUpAddCard);
+  clearValidation(formCard, validationConfig);
+  cardNnameInput.value = "";
+  cardUrlInput.value = "";
+  openModal(popUpAddCard);
 }
 );
 
@@ -85,3 +90,32 @@ formCard.addEventListener('submit', handleAddCardFormSubmit);
 function prependCard(card){
     placesList.prepend(card);
   }
+
+
+//Валидация форм
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'form__input-error-active'
+}
+  const enableValidation = (validationConfig) => {
+    const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
+    formList.forEach((formElement) => {
+      setEventListeners(formElement, validationConfig);
+    });
+  };
+  
+  const clearValidation = (formElement, validationConfig) => {
+    const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
+    const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
+    inputList.forEach((inputElement) => {
+      hideInputError(formElement, inputElement,validationConfig);
+      toggleButtonState(inputList, buttonElement); 
+    });
+   
+  };
+
+  enableValidation(validationConfig);
+ 

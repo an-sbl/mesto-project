@@ -8,7 +8,7 @@
   },
   "author": "Anna Sobolevskaya",
   "license": "ISC",
-  "description": "",
+  "description": "https://github.com/an-sbl/mesto-project-ff.git",
   "devDependencies": {
     "@babel/core": "^7.25.9",
     "@babel/preset-env": "^7.25.9",

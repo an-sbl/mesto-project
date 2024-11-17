@@ -20,3 +20,24 @@
     margin-right: 0;
   }
 }
+.profile__image:hover:before{
+  block-size: 120px;
+  inline-size: 120px;
+  top: 60px;
+  left: 60px;
+  position: absolute;
+  z-index:1;
+  height: 120px;
+  content:"";
+  position: relative;
+  background-image: url("https://a.d-cd.net/kW1-KRonjrr8vgDQiVwrsTbF7hY-1920.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.profile__image:hover{
+  display: block;
+  block-size: 120px;
+  inline-size: 120px;
+  background-color: rgb(1,1,1);
+}

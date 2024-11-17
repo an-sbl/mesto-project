@@ -23,11 +23,12 @@
           <div
             class="profile__image"
             style="background-image: url(<%=require('./images/avatar.jpg')%>)"
-          ></div>
+          >
+          </div>
           <div class="profile__info">
-            <h1 class="profile__title">Жак-Ив Кусто</h1>
+            <h1 class="profile__title"></h1>
             <button class="profile__edit-button" type="button"></button>
-            <p class="profile__description">Исследователь океана</p>
+            <p class="profile__description"></p>
           </div>
           <button class="profile__add-button" type="button"></button>
         </section>
@@ -79,6 +80,31 @@
           </form>
         </div>
       </div>
+      <div class="popup popup_type_edit-profile-image">
+        <div class="popup__content">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Обновить аватар</h3>
+          <form class="popup__form" name="editProfileImage">
+            <input
+              type="url"
+              id="link-input"
+              name="link"
+              class="popup__input popup__input_type_url_profile"
+              placeholder="Ссылка на аватар"
+              pattern="^https?:\/\/\S+\.(?:png|jpg)$"
+              data-error-pattern="Введите адрес сайта"
+              data-error-required="Вы пропустили это поле"
+              data-error-length="Минимальное количество символов 2. Длина текста сейчас 1 символ"              
+              required
+            />
+            <span class="link-input-error form__input-error">Введите адрес сайта</span>
+            <button type="submit" class="button popup__button">
+              Сохранить
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
       <div class="popup popup_type_new-card">
         <div class="popup__content">
           <button type="button" class="popup__close"></button>
@@ -127,12 +153,16 @@
       </div>
     </div>
     <template id="card-template">
-      <li class="places__item card">
+      <li id="" likes="" class="places__item card">
         <img class="card__image" src="" alt="" />
         <button type="button" class="card__delete-button"></button>
         <div class="card__description">
           <h2 class="card__title"></h2>
-          <button type="button" class="card__like-button"></button>
+          <div class="card__like">
+            <button type="button" class="card__like-button"></button>
+            <span class="card__like-number"></span>
+          </div>
+         
         </div>
       </li>
     </template>

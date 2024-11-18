@@ -37,9 +37,12 @@ export const requestEditProfileImage = (newProfileImage) =>{
   return fetch('https://nomoreparties.co/v1/wff-cohort-26/users/me/avatar ', {
     method: 'PATCH',
     headers: {
-      authorization: 'ab741f44-5d39-4d07-9d34-724dcb089dae'
+      authorization: 'ab741f44-5d39-4d07-9d34-724dcb089dae',
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(newProfileImage)
+    body: JSON.stringify({
+      avatar: newProfileImage
+    })
   })
   .then((res) => {
     if (res.ok) {

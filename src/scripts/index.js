@@ -38,6 +38,7 @@ const formEditProfileImage = document.forms.editProfileImage;
 const profileImageInput =  formEditProfileImage.querySelector('.popup__input_type_url_profile');  
 const profileDescription = document.querySelector('.profile__description');
 const profileImage = document.querySelector('.profile__image');
+const profileImageButton = document.querySelector('.profile__image-container');
 
 profileEditButton.addEventListener('click', function(){
    clearValidation(formEdit, validationConfig);
@@ -47,7 +48,7 @@ profileEditButton.addEventListener('click', function(){
     }
 );
 
-profileImage.addEventListener('click', function(){
+profileImageButton.addEventListener('click', function(){
   clearValidation(formEditProfileImage, validationConfig);
   profileImageInput.value = "";
   openModal(popUpImageProfile);
@@ -74,12 +75,9 @@ function handleEditProfileFormSubmit(evt) {
 function handleEditProfileImageFormSubmit(evt) {
   waitFormSavimgInfo(formEditProfileImage);
   evt.preventDefault();
-  const newProfileImage = {};
-  newProfileImage.avatar = profileImageInput.value;
-  
-  requestEditProfileImage(newProfileImage)
+  requestEditProfileImage(profileImageInput.value)
         .then((result) => {     
-          profileImage.setAttribute("style", `background-image: url("${profileImageInput.value}")`);
+          profileImage.setAttribute("src", profileImageInput.value);
         })
         .catch((err) => {
           console.log(err);
@@ -161,7 +159,7 @@ const validationConfig = {
     .then(([resProfile, resCards]) => {
       profileName.textContent = resProfile.name;
       profileDescription.textContent = resProfile.about;
-      profileImage.setAttribute("style", `background-image: url("${resProfile.avatar}")`);
+      profileImage.setAttribute("src", resProfile.avatar);
       resCards.forEach(function (cardInfo){
         const link = cardInfo.link;
         const name = cardInfo.name;

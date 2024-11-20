@@ -1,9 +1,9 @@
 import '../pages/index.css';
 import './validation.js';
-import {createCard, removeCard, likeCard, myId} from './cards.js'
+import {createCard, removeCard, likeCard, myId, handleLikeCard} from './cards.js'
 import {openModal, closeModal, addPopupListeners} from './modal.js'
-import {toggleButtonState, setEventListeners, hideInputError} from './validation.js'
-import {requestEditProfile, requestEditProfileImage, requestAddCard, requestDeleteCard, requestAddLikeCard, requestDeleteLikeCard, requestProfile, requestCard} from './api.js'
+import {enableValidation, clearValidation} from './validation.js'
+import {requestEditProfile, requestEditProfileImage, requestAddCard, requestDeleteCard,requestProfile, requestCard} from './api.js'
 
 const placesList = document.querySelector('.places__list');
 
@@ -56,34 +56,42 @@ profileImageButton.addEventListener('click', function(){
 );
 
 function handleEditProfileFormSubmit(evt) {
-        waitFormSavimgInfo(formEdit);
+        waitFormSavingInfo(formEdit);
         evt.preventDefault();
         const newProfile = {};
         newProfile.name = nameInput.value;
         newProfile.about = jobInput.value;
         requestEditProfile(newProfile)
         .then((result) => {
+          console.log(result);
           profileName.textContent = result.name;
           profileDescription.textContent=  result.about;
+          closeModal(popUpEditProfile);
         })
         .catch((err) => {
           console.log(err);
-        });  
-        closeModal(popUpEditProfile);
+        })
+        .finally(() =>{
+          waitFormSavingInfo(formEdit);
+        });
 }
 
 function handleEditProfileImageFormSubmit(evt) {
-  waitFormSavimgInfo(formEditProfileImage);
+  waitFormSavingInfo(formEditProfileImage);
   evt.preventDefault();
   requestEditProfileImage(profileImageInput.value)
         .then((result) => {     
           profileImage.setAttribute("src", profileImageInput.value);
+          formEditProfileImage.reset();
+          closeModal(popUpImageProfile);
         })
         .catch((err) => {
           console.log(err);
-        });  
+        })
+        .finally(() =>{
+          waitFormSavingInfo(formEditProfileImage);
+        });
  
-  closeModal(popUpImageProfile);
 }
 
 formEdit.addEventListener('submit', handleEditProfileFormSubmit);
@@ -103,7 +111,7 @@ addCardButton.addEventListener('click', function(){
 );
 
 function handleAddCardFormSubmit(evt) {
-  waitFormSavimgInfo(formCard);
+  waitFormSavingInfo(formCard);
         evt.preventDefault();
         const newCard = {};
         newCard.name = cardNnameInput.value;
@@ -113,11 +121,14 @@ function handleAddCardFormSubmit(evt) {
           const card = createCard(cardInfo.link, cardInfo.name, "Описание картинки", 0,cardInfo['_id'],cardInfo.owner['_id'], handleDeleteCard, addPopupListenersImage, handleLikeCard);
           prependCard(card);
           formCard.reset();
+          closeModal(popUpAddCard);
         })
         .catch((err) => {
           console.log(err);
-        }); 
-        closeModal(popUpAddCard);
+        })
+        .finally(() =>{
+          waitFormSavingInfo(formCard);
+        });
     }
 formCard.addEventListener('submit', handleAddCardFormSubmit);
 
@@ -134,22 +145,7 @@ const validationConfig = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'form__input-error-active'
 }
-  const enableValidation = (validationConfig) => {
-    const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
-    formList.forEach((formElement) => {
-      setEventListeners(formElement, validationConfig);
-    });
-  };
-  
-  const clearValidation = (formElement, validationConfig) => {
-    const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
-    const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
-    inputList.forEach((inputElement) => {
-      hideInputError(formElement, inputElement,validationConfig);
-      toggleButtonState(inputList, buttonElement); 
-    });
-   
-  };
+ 
 
   enableValidation(validationConfig);
  
@@ -185,34 +181,10 @@ const handleDeleteCard = (evt) => {
     console.log(err);
   }); 
 };
-const handleLikeCard = (evt) => {
-  const cardItem = evt.target.closest('.card');
-  
-  if (cardItem.querySelector('.card__like-button').classList.contains('card__like-button_is-active')){
-    requestDeleteLikeCard(cardItem.id)
-    .then((res)=> {
-      likeCard(cardItem);
-      cardItem.querySelector('.card__like-number').textContent = Number(cardItem.getAttribute('likes')) - 1;
-      cardItem.setAttribute("likes", Number(cardItem.getAttribute('likes')) - 1);
-    })
-    .catch((err) => {
-      console.log(err);
-    }); 
-  }else{
-    requestAddLikeCard(cardItem.id)
-    .then((res)=> {
-      likeCard(cardItem);
-      cardItem.querySelector('.card__like-number').textContent = Number(cardItem.getAttribute('likes')) + 1;
-      cardItem.setAttribute("likes", Number(cardItem.getAttribute('likes')) + 1);
-    })
-    .catch((err) => {
-      console.log(err);
-    }); 
-  }
-};
 
-const waitFormSavimgInfo = (formElement) => {
+
+const waitFormSavingInfo = (formElement) => {
   const saveButton = formElement.querySelector('.popup__button');
-  saveButton.twxtCentent = "Сохранение..."
+  saveButton.textCentent = "Сохранение...";
 
 };

@@ -5,7 +5,7 @@ const showInputError = (formElement, inputElement, errorMessage, validationConfi
   errorElement.classList.add(validationConfig.errorClass);
 };
 
-export const hideInputError = (formElement, inputElement,validationConfig) => {
+const hideInputError = (formElement, inputElement,validationConfig) => {
  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove(validationConfig.inputErrorClass);
   errorElement.classList.remove(validationConfig.errorClass);
@@ -31,7 +31,7 @@ else if (inputElement.validity.valueMissing) {
   }
 }; 
 
-export const setEventListeners = (formElement, validationConfig) => {
+const setEventListeners = (formElement, validationConfig) => {
   const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
   const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
   inputList.forEach((inputElement) => {
@@ -48,10 +48,26 @@ const hasInvalidInput = (inputList) => {
   })
 }; 
 
-export const toggleButtonState = (inputList, buttonElement) => {
+const toggleButtonState = (inputList, buttonElement) => {
   if (hasInvalidInput(inputList)) {
         buttonElement.disabled = true;
   } else {
         buttonElement.disabled = false;
   }
 }; 
+export const enableValidation = (validationConfig) => {
+  const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
+  formList.forEach((formElement) => {
+    setEventListeners(formElement, validationConfig);
+  });
+};
+
+export const clearValidation = (formElement, validationConfig) => {
+  const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
+  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
+  inputList.forEach((inputElement) => {
+    hideInputError(formElement, inputElement,validationConfig);
+    toggleButtonState(inputList, buttonElement); 
+  });
+ 
+};

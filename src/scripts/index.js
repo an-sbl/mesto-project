@@ -1,6 +1,6 @@
 import '../pages/index.css';
 import './validation.js';
-import {createCard, removeCard, likeCard, myId, handleLikeCard} from './cards.js'
+import {createCard, removeCard, likeCard, handleLikeCard} from './cards.js'
 import {openModal, closeModal, addPopupListeners} from './modal.js'
 import {enableValidation, clearValidation} from './validation.js'
 import {requestEditProfile, requestEditProfileImage, requestAddCard, requestDeleteCard,requestProfile, requestCard} from './api.js'
@@ -39,9 +39,11 @@ const profileImageInput =  formEditProfileImage.querySelector('.popup__input_typ
 const profileDescription = document.querySelector('.profile__description');
 const profileImage = document.querySelector('.profile__image');
 const profileImageButton = document.querySelector('.profile__image-container');
+export let userId;
 
 profileEditButton.addEventListener('click', function(){
    clearValidation(formEdit, validationConfig);
+   returnSaveButtonText(formEdit);
     nameInput.value = profileName.textContent;
     jobInput.value = profileDescription.textContent;
     openModal(popUpEditProfile);
@@ -50,6 +52,7 @@ profileEditButton.addEventListener('click', function(){
 
 profileImageButton.addEventListener('click', function(){
   clearValidation(formEditProfileImage, validationConfig);
+  returnSaveButtonText(formEditProfileImage);
   profileImageInput.value = "";
   openModal(popUpImageProfile);
   }
@@ -104,6 +107,7 @@ const cardUrlInput =  formCard.querySelector('.popup__input_type_url');
 
 addCardButton.addEventListener('click', function(){
   clearValidation(formCard, validationConfig);
+  returnSaveButtonText(formCard);
   cardNnameInput.value = "";
   cardUrlInput.value = "";
   openModal(popUpAddCard);
@@ -156,13 +160,14 @@ const validationConfig = {
       profileName.textContent = resProfile.name;
       profileDescription.textContent = resProfile.about;
       profileImage.setAttribute("src", resProfile.avatar);
+      userId = resProfile["_id"];
       resCards.forEach(function (cardInfo){
         const link = cardInfo.link;
         const name = cardInfo.name;
         const alt = cardInfo.name;
         const card = createCard(link, name, alt, cardInfo.likes.length, cardInfo["_id"], cardInfo.owner["_id"], handleDeleteCard, addPopupListenersImage, handleLikeCard);
         cardInfo.likes.forEach((like) => {
-          like['_id'] == myId && likeCard(card);
+          like['_id'] == userId && likeCard(card);
           })
         prependCard(card);
       });
@@ -185,6 +190,12 @@ const handleDeleteCard = (evt) => {
 
 const waitFormSavingInfo = (formElement) => {
   const saveButton = formElement.querySelector('.popup__button');
-  saveButton.textCentent = "Сохранение...";
+  saveButton.textContent = "Сохранение...";
+
+};
+
+const returnSaveButtonText = (formElement) => {
+  const saveButton = formElement.querySelector('.popup__button');
+  saveButton.textContent = "Сохранить";
 
 };

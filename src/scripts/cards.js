@@ -1,7 +1,7 @@
 
 import {requestAddLikeCard, requestDeleteLikeCard} from './api.js'
+import {userId} from './index.js'
 const cardTemplate = document.querySelector('#card-template').content;
-export const myId ='c085d33261774860d5b8749b';
 
 
 // @todo: Функция создания карточки
@@ -16,7 +16,7 @@ export function createCard(link, name, alt, likes, idCard, ownerId, deleteCard, 
   numLikesElement.textContent = likes;
   cardElement.setAttribute("likes",likes);
   cardElement.id = idCard;
-  ownerId !== myId && deleteButton.remove();
+  ownerId !== userId && deleteButton.remove();
   deleteButton.addEventListener('click', deleteCard);
   cardElement.querySelector('.card__image').addEventListener('click', () => popUpImage(name, link, alt));
   likeElement.addEventListener('click', () => likeCard(cardElement, idCard, likeElement, numLikesElement));

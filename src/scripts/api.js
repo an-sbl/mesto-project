@@ -97,16 +97,16 @@ export const requestDeleteLikeCard = (cardId) =>{
 };
 
 export const requestProfile = new Promise((resolve, reject) => {
- fetch(`${serverConfig.url}/users/me`, {
-    headers: {
-      authorization: serverConfig.auth
-    }
-  })
-  .then((res) => {
-    if (res.ok) {
-      resolve(res.json());
-    }
-        reject(`Что-то пошло не так: ${res.status}`);
+  fetch(`${serverConfig.url}/users/me`, {
+      headers: {
+        authorization: serverConfig.auth
+      }
+    })
+    .then((res) => {
+      if (res.ok) {
+        resolve(res.json());
+      }
+          reject(`Что-то пошло не так: ${res.status}`);
 });
 });
 

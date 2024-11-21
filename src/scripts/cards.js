@@ -1,11 +1,9 @@
-
 import {requestAddLikeCard, requestDeleteLikeCard} from './api.js'
-import {userId} from './index.js'
 const cardTemplate = document.querySelector('#card-template').content;
 
 
 // @todo: Функция создания карточки
-export function createCard(link, name, alt, likes, idCard, ownerId, deleteCard, popUpImage, likeCard){
+export function createCard(link, name, alt, likes, idCard, userId, ownerId, deleteCard, popUpImage, likeCard){
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const deleteButton = cardElement.querySelector('.card__delete-button');
   const likeElement = cardElement.querySelector('.card__like-button');

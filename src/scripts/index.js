@@ -39,7 +39,7 @@ const profileImageInput =  formEditProfileImage.querySelector('.popup__input_typ
 const profileDescription = document.querySelector('.profile__description');
 const profileImage = document.querySelector('.profile__image');
 const profileImageButton = document.querySelector('.profile__image-container');
-export let userId;
+let userId;
 
 profileEditButton.addEventListener('click', function(){
    clearValidation(formEdit, validationConfig);
@@ -122,7 +122,7 @@ function handleAddCardFormSubmit(evt) {
         newCard.link = cardUrlInput.value;
         requestAddCard(newCard)
         .then((cardInfo) => {
-          const card = createCard(cardInfo.link, cardInfo.name, "Описание картинки", 0,cardInfo['_id'],cardInfo.owner['_id'], handleDeleteCard, addPopupListenersImage, handleLikeCard);
+          const card = createCard(cardInfo.link, cardInfo.name, "Описание картинки", 0,cardInfo['_id'], userId, cardInfo.owner['_id'], handleDeleteCard, addPopupListenersImage, handleLikeCard);
           prependCard(card);
           formCard.reset();
           closeModal(popUpAddCard);
@@ -165,7 +165,7 @@ const validationConfig = {
         const link = cardInfo.link;
         const name = cardInfo.name;
         const alt = cardInfo.name;
-        const card = createCard(link, name, alt, cardInfo.likes.length, cardInfo["_id"], cardInfo.owner["_id"], handleDeleteCard, addPopupListenersImage, handleLikeCard);
+        const card = createCard(link, name, alt, cardInfo.likes.length, cardInfo["_id"], userId, cardInfo.owner["_id"], handleDeleteCard, addPopupListenersImage, handleLikeCard);
         cardInfo.likes.forEach((like) => {
           like['_id'] == userId && likeCard(card);
           })
